@@ -1,0 +1,46 @@
+{% extends "blades/base2.html" %}
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<div class="main container-fluid p-5">
+  <h1>Bem-vindo!</h1>
+  <h4>Veja os últimos dados coletados de seus sensores.</h4>
+
+  <hr class="pb-4">
+  <div class="container-fluid">
+    <div class="row g-2">
+      {% for key, s in sensors.items() %}
+        {% set cid = key if key not in ('temperature','humidity','silo')
+                 else 'temp' if key=='temperature'
+                 else 'hum'  if key=='humidity'
+                 else 'silo' %}
+        <div class="col-6">
+          <div id="card-{{ cid }}"
+               class="p-4 rounded-4 home table-responsive bg-{{ s.color }}">
+            <div class="d-flex justify-content-between">
+              <div class="d-flex">
+                <i class="bi {{ s.icon }} me-3"></i>
+                <h4 class="text">{{ s.name }}</h4>
+              </div>
+              <a href="/sensor/{{ key }}" class="botao-link">
+                <i class="bi bi-arrow-right"></i>
+              </a>
+            </div>
+            <hr class="mt-1">
+            <span class="sensor-value" id="{{ cid }}-value">
+              {{ '%.2f'|format(s.value) if s.value is not none else '--' }}
+              {{ s.unit }}
+            </span>
+            <p class="resume mt-2" id="{{ cid }}-status-text">
+              {% if   s.color=='green'  %}Não há nada com o que se preocupar!
+              {% elif s.color=='yellow'%}Atenção: alteração detectada!
+              {% elif s.color=='red'   %}ALERTA! Estado crítico!
+              {% else %}Nenhum dado detectado até o momento.{% endif %}
+            </p>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock %}

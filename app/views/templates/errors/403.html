@@ -1,0 +1,15 @@
+{% extends "blades/base.html" %}
+{% block title %}Acesso negado{% endblock %}
+{% block content %}
+<section class="hero-full d-flex flex-column justify-content-center align-items-center">
+  <div class="row align-items-center mb-0 w-100">
+    <div class="col-12 align-items-center justify-content-center d-flex flex-column p-2 hero-full-title">
+      <h1 class="display-3 text-danger">403</h1>
+      <p class="lead mb-4">Você não tem permissão para acessar esta página.</p>
+      <a href="{{ url_for('main.home') }}" class="btn btn-primary">
+        Voltar para a Home
+      </a>
+    </div>
+  </div>
+</section>
+{% endblock %}

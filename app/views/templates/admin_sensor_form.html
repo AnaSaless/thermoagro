@@ -1,0 +1,46 @@
+{% extends "blades/base2.html" %}
+{% block title %}{{ 'Novo' if action=='create' else 'Editar' }} Sensor{% endblock %}
+
+{% block content %}
+<div class="main container-fluid p-5">
+  <h1>{{ 'Novo' if action=='create' else 'Editar' }} Sensor</h1>
+  <hr class="mt-1 text-white">
+  <form method="post"
+        action="{% if action=='create' %}
+                  {{ url_for('sensor.admin_create_sensor') }}
+                {% else %}
+                  {{ url_for('sensor.admin_update_sensor', key=key) }}
+                {% endif %}">
+
+    <div class="mb-3">
+      <label class="form-label">Nome</label>
+      <input name="name" class="form-control"
+             value="{{ data.name if action=='edit' else '' }}" required>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Tópico MQTT</label>
+      <input name="topic" class="form-control"
+             value="{{ data.topic if action=='edit' else '' }}" required>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Ícone Bootstrap (ex: bi-thermometer)</label>
+      <input name="icon" class="form-control"
+             value="{{ data.icon if action=='edit' else '' }}" required>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Unidade (°C, %, …)</label>
+      <input name="unit" class="form-control"
+             value="{{ data.unit if action=='edit' else '' }}">
+    </div>
+
+    {% if error_msg %}<p class="text-danger">{{ error_msg }}</p>{% endif %}
+
+    <button class="btn btn-success">Salvar</button>
+    <a href="{{ url_for('sensor.admin_list_sensors') }}"
+       class="btn btn-secondary">Cancelar</a>
+  </form>
+</div>
+{% endblock %}

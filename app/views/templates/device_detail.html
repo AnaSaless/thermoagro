@@ -1,0 +1,116 @@
+{# templates/device_detail.html #}
+{% extends "blades/base2.html" %}
+{% block title %}{{ device.name }}{% endblock %}
+
+{% block content %}
+<div class="main container-fluid p-5">
+
+  {# ─── Cabeçalho ─── #}
+  <div class="d-flex justify-content-between">
+    <div class="d-flex">
+      <i class="bi {{ device.icon }} me-3"></i>
+      <h1>{{ device.name }}</h1>
+    </div>
+
+    {% if is_admin %}
+      <a href="/admin/{{ 'sensors' if dev_type == 'sensor' else 'actuators' }}/{{ dev_key }}/edit">
+        <button class="btn btn-lg fw-bold mb-3" id="button1">
+          <i class="bi bi-gear me-2"></i> Configurações
+        </button>
+      </a>
+    {% endif %}
+  </div>
+  <hr class="mt-1 text-white">
+
+  {# ─── Bloco Principal (Sensor ou Atuador) ─── #}
+  {% if dev_type == 'sensor' %}
+    {% set cid = dev_key if dev_key not in ('temperature','humidity','silo')
+                 else 'temp' if dev_key=='temperature'
+                 else 'hum'  if dev_key=='humidity'
+                 else 'silo' %}
+    <div class="col-12 mb-5">
+      <div id="card-{{ cid }}" class="p-4 tabela rounded-4 table-responsive bg-{{ device.color }}">
+        <h2>Último dado coletado</h2>
+        <h1 id="{{ cid }}-value">
+          {% if device.value is not none %}
+            {{ '%.2f'|format(device.value) }} {{ device.unit }}
+          {% else %}-- {{ device.unit }}{% endif %}
+        </h1>
+        <p id="{{ cid }}-status-text" class="resume mt-2">
+          {% if   device.color=='green'  %}Não há nada com o que se preocupar!
+          {% elif device.color=='yellow'%}Atenção: alteração detectada!
+          {% elif device.color=='red'   %}ALERTA! Estado crítico!
+          {% else %}Nenhum dado detectado até o momento.{% endif %}
+        </p>
+      </div>
+    </div>
+
+  {% else %}
+    <div class="col-12 mb-4">
+      <h2>Informações do Atuador</h2>
+      <p class="mb-1"><strong>Tópico MQTT:</strong> <code>{{ device.topic }}</code></p>
+      <p class="mb-1"><strong>Payload Abrir:</strong>  <code>{{ device.open_payload }}</code></p>
+      <p class="mb-1"><strong>Payload Fechar:</strong> <code>{{ device.close_payload }}</code></p>
+    </div>
+  {% endif %}
+
+  {# ─── Botões (atuadores) ─── #}
+  {% if dev_type=='actuator' and device.open_payload and device.close_payload
+        and session.get('function')=='operator' %}
+    <button id="btn-open" class="btn btn-success mb-2 me-2">
+      <i class="bi bi-box-arrow-up-right me-1"></i>Abrir
+    </button>
+    <button id="btn-close" class="btn btn-danger mb-2">
+      <i class="bi bi-box-arrow-in-down-left me-1"></i>Fechar
+    </button>
+  {% endif %}
+
+  {# ─── Filtro de data ─── #}
+  {% if dev_type == 'sensor' and session.get('function') == 'estatistico' %}
+    {# Estatístico (sensor) #}
+    <form method="get" class="row g-2 mb-3">
+      <div class="col-auto"><input type="date" name="from" value="{{ request.args.get('from','') }}" class="form-control"></div>
+      <div class="col-auto"><input type="date" name="to"   value="{{ request.args.get('to','') }}"   class="form-control"></div>
+      <div class="col-auto"><button class="btn btn-primary"><i class="bi bi-search"></i></button></div>
+    </form>
+  {% elif dev_type == 'actuator' and (session.get('function') == 'operator' or session.get('is_admin')) %}
+    {# Operador/Admin (atuador) #}
+    <form method="get" class="row g-2 mb-3">
+      <div class="col-auto"><input type="date" name="from" value="{{ request.args.get('from','') }}" class="form-control"></div>
+      <div class="col-auto"><input type="date" name="to"   value="{{ request.args.get('to','') }}"   class="form-control"></div>
+      <div class="col-auto"><button class="btn btn-primary"><i class="bi bi-search"></i></button></div>
+    </form>
+  {% endif %}
+
+  {# ─── Histórico ─── #}
+  {% if history %}
+    <div class="d-flex align-items-center mt-3 mb-3">
+      <i class="bi bi-clock-history me-2"></i><h4 class="m-0">Histórico</h4>
+    </div>
+
+    <div class="input-group mb-3">
+      <input id="searchInput" class="form-control" placeholder="Filtrar data ou valor">
+      <button id="clearSearch" class="btn btn-outline-secondary"><i class="bi bi-x"></i></button>
+    </div>
+
+    <div class="table-responsive">
+      <table id="histTable" class="table table-striped">
+        <thead><tr><th>Data/Hora</th><th>Valor</th><th>Status</th></tr></thead>
+        <tbody>
+        {% for h in history %}
+          <tr>
+            <td>{{ h.ts }}</td>
+            <td>{{ h.value }}{% if dev_type=='sensor' %} {{ device.unit }}{% endif %}</td>
+            <td><span class="badge bg-{{ h.color }}">
+              {% if h.color=='green' %}Normal{% elif h.color=='yellow' %}Moderado
+              {% elif h.color=='red' %}Crítico{% else %}—{% endif %}
+            </span></td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% endif %}
+
+</div>
+{% endblock %}

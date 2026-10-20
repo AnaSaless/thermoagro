@@ -1,0 +1,47 @@
+{% extends "blades/base2.html" %}
+{% block title %}Sensores{% endblock %}
+
+{% block content %}
+<div class="main container-fluid p-5">
+  <div class="d-flex justify-content-between">
+    <div class="d-flex">
+      <i class="bi bi-speedometer2 me-3"></i>
+      <h1>Sensores</h1>
+    </div>
+
+    <a href="{{ url_for('sensor.admin_new_sensor') }}">
+      <button class="btn btn-lg fw-bold mb-3" id="button1">
+          <i class="bi bi-plus-lg me-2"></i> Novo sensor
+      </button>
+    </a>
+  </div>
+
+  <hr class="mt-1 text-white">
+
+  <table class="table table-bordered">
+    <thead>
+      <tr><th>Nome</th><th>Tópico</th><th>Unidade</th><th>Ações</th></tr>
+    </thead>
+    <tbody>
+      {% for sid, s in sensors.items() %}
+      <tr>
+        <td>{{ s.name }}</td>
+        <td>{{ s.topic }}</td>
+        <td>{{ s.unit if s.unit else '—' }}</td>
+        <td>
+          <a href="{{ url_for('sensor.admin_edit_sensor', key=sid) }}"
+             class="btn btn-sm btn-warning">Editar</a>
+
+          <form method="post"
+                action="{{ url_for('sensor.admin_delete_sensor', key=sid) }}"
+                style="display:inline"
+                onsubmit="return confirm('Excluir?');">
+            <button class="btn btn-sm btn-danger">Excluir</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

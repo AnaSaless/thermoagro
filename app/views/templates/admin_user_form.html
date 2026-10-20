@@ -1,0 +1,44 @@
+{% extends "blades/base2.html" %}
+{% block title %}{% if action == 'create' %}Novo{% else %}Editar{% endif %} usuário{% endblock %}
+
+{% block content %}
+<div class="main container-fluid p-5">
+  <h1 class="mb-4">
+    {% if action == 'create' %}Novo usuário{% else %}Editar usuário{% endif %}
+  </h1>
+
+  <form method="post"
+        action="{% if action == 'create' %}{{ url_for('user.admin_create_user') }}
+                {% else %}{{ url_for('user.admin_update_user', username=username) }}{% endif %}">
+    {% if action == 'edit' %}
+      <div class="mb-3">
+        <label class="form-label">Username</label>
+        <input class="form-control" value="{{ username }}" disabled>
+      </div>
+    {% else %}
+      <div class="mb-3">
+        <label class="form-label">Username</label>
+        <input name="user" class="form-control" required>
+      </div>
+    {% endif %}
+
+    <div class="mb-3">
+      <label class="form-label">E-mail</label>
+      <input name="email" type="email" class="form-control"
+             value="{{ data.email if action == 'edit' else '' }}" required>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Senha {% if action=='edit' %}(deixe vazio para não alterar){% endif %}</label>
+      <input name="password" type="password" class="form-control">
+    </div>
+
+    {% if error_msg %}<p class="text-danger">{{ error_msg }}</p>{% endif %}
+
+    <button class="btn btn-success">
+      {% if action == 'create' %}Cadastrar{% else %}Salvar alterações{% endif %}
+    </button>
+    <a href="{{ url_for('user.admin_list_users') }}" class="btn btn-secondary">Cancelar</a>
+  </form>
+</div>
+{% endblock %}

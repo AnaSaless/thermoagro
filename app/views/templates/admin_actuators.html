@@ -1,0 +1,53 @@
+{% extends "blades/base2.html" %}
+{% block title %}Atuadores{% endblock %}
+
+{% block content %}
+<div class="main container-fluid p-5">
+
+  <div class="d-flex justify-content-between">
+    <div class="d-flex">
+      <i class="bi bi-sliders me-3"></i>
+      <h1>Atuadores</h1>
+    </div>
+
+    <a href="{{ url_for('actuator.admin_new_actuator') }}">
+      <button class="btn btn-lg fw-bold mb-3" id="button1">
+          <i class="bi bi-plus-lg me-2"></i> Novo atuador
+      </button>
+    </a>
+  </div>
+
+  <hr class="mt-1 text-white">
+
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>Nome</th><th>Tópico</th>
+        <th>Payload abrir</th><th>Payload fechar</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for aid, a in actuators.items() %}
+      <tr>
+        <td>{{ a.name }}</td>
+        <td>{{ a.topic }}</td>
+        <td><code>{{ a.open_payload }}</code></td>
+        <td><code>{{ a.close_payload }}</code></td>
+        <td>
+          <a href="{{ url_for('actuator.admin_edit_actuator', key=aid) }}"
+             class="btn btn-sm btn-warning">Editar</a>
+
+          <form method="post"
+                action="{{ url_for('actuator.admin_delete_actuator', key=aid) }}"
+                style="display:inline"
+                onsubmit="return confirm('Excluir?');">
+            <button class="btn btn-sm btn-danger">Excluir</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

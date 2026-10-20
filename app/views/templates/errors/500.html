@@ -1,0 +1,14 @@
+{% extends "blades/base.html" %}
+{% block title %}Erro interno{% endblock %}
+{% block content %}
+<section class="hero-full d-flex flex-column justify-content-center align-items-center">
+  <div class="row align-items-center mb-0 w-100">
+    <div class="col-12 align-items-center justify-content-center d-flex flex-column p-2 hero-full-title">
+      <h1 class="display-3 text-danger">500</h1>
+      <p class="lead mb-4">Algo inesperado aconteceu. Já estamos verificando.</p>
+      <a href="{{ url_for('main.home') }}" class="btn btn-primary">
+        Voltar para a Home
+      </a>
+    </div>
+</section>
+{% endblock %}

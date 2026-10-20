@@ -1,0 +1,55 @@
+<aside id="sidebar" class="fixed-top h-100">
+    <div class="d-flex">
+        <button class="toggle-btn" type="button">
+            <img src="{{ url_for('static', filename='logo.png') }}" class="img-fluid w-50">
+        </button>
+        <div class="sidebar-logo">
+            <a href="/home" class="text-decoration-none" id="logo-text">ThermoAgro</a>
+        </div>
+    </div>
+
+    <ul class="sidebar-nav">
+        <li class="sidebar-item">
+            <a href="/home" class="sidebar-link">
+                <i class="bi bi-house"></i><span>Home</span>
+            </a>
+        </li>
+
+        {# ---- Sensores ---- #}
+        {% for key, s in sensors.items() %}
+        <li class="sidebar-item">
+            <a href="/sensor/{{ key }}" class="sidebar-link">
+                <i class="bi {{ s.icon }}"></i><span>{{ s.name }}</span>
+            </a>
+        </li>
+        {% endfor %}
+
+        {# ---- Atuadores ---- #}
+        {% for k, a in actuators.items() %}
+        <li class="sidebar-item">
+            <a href="{{ url_for('actuator.actuator_detail', key=k) }}" class="sidebar-link">
+                <i class="bi {{ a.icon }}"></i><span>{{ a.name }}</span>
+            </a>
+        </li>
+        {% endfor %}
+
+        {# ---- Links Admin ---- #}
+        {% if session.get('is_admin') %}
+            <a href="{{ url_for('sensor.admin_list_sensors') }}" class="sidebar-link">
+                <i class="bi bi-speedometer2"></i><span>Sensores</span>
+            </a>
+            <a href="{{ url_for('actuator.admin_list_actuators') }}" class="sidebar-link">
+                <i class="bi bi-sliders"></i><span>Atuadores</span>
+            </a>
+            <a href="{{ url_for('user.admin_list_users') }}" class="sidebar-link">
+                <i class="bi bi-people"></i><span>Usuários</span>
+            </a>
+        {% endif %}
+    </ul>
+
+    <div class="sidebar-footer">
+        <a href="/logout" class="sidebar-link">
+            <i class="bi bi-box-arrow-left"></i><span>Logout</span>
+        </a>
+    </div>
+</aside>

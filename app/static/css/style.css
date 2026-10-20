@@ -1,0 +1,279 @@
+:root{
+  --tg-blue : #0057FF;
+  --tg-dark : #0E1B34;
+}
+::after,
+::before {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+.bg-green   { background-color: #6dad6a!important;}
+.bg-yellow  { background-color: #d9a300!important;}
+.bg-red     { background-color: #dc3545!important;}
+
+*{box-sizing:border-box; color: #FFF}
+body,html{ margin:0; height:100%; font-family:'Montserrat',sans-serif; }
+#logo-text{ font-family:'Baskervville SC',serif; }
+
+li {
+    list-style: none;
+    color: #000;
+}
+h3{
+    font-size: 2em !important; 
+}
+p{
+    font-size: 1.3em;
+}
+
+.hero-full{
+  position:relative;
+  min-height:100vh;
+  background:url("../background.png") center/cover no-repeat;
+  padding-top:80px;                 /* afasta do topo p/ navbar */
+}
+
+.hero-full::before{
+  content:"";
+  position:absolute; inset:0;
+  background:rgba(0,0,0,.55);
+  backdrop-filter:blur(1.5px);
+}
+
+.hero-full-title{
+  position:relative;
+  z-index:1;
+  color:#fff;
+  font-size:clamp(2.2rem,6vw,3.8rem);
+}
+
+.login-card{
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 420px;
+  background: rgba(8, 20, 41, 0.5) !important;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  border-radius: 1.5rem;
+  padding: 2.5rem clamp(1rem, 6vw, 2.5rem);
+}
+
+.login-card h2.h5 {
+  color: #fff;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+  
+.login-card .form-control{
+  border-radius: .8rem;
+  padding: .9rem 1rem;
+  background: rgba(250, 250, 250, 0.9);
+  border: 1px solid rgba(226, 226, 226, 0.5);
+}
+  
+.login-card .form-control:focus{
+  border-color: var(--tg-blue);
+  box-shadow: 0 0 0 .25rem rgba(0, 87, 255, .25);
+}
+  
+.login-card a.small {
+  color: #fff;
+  font-weight: 500;
+  text-decoration: underline;
+}
+
+#entrar-btn{
+  background-color: #C4C5C6 !important;
+  color: #000;
+}
+#entrar-btn:hover{
+  font-weight: 600;
+}
+
+
+
+.foot {
+    display: flex;
+    align-items: center;
+    justify-content:center;
+    background-color:  #0a141f;
+}
+.redes_sociais{
+    font-size: 15px;
+    margin-left: 10px;
+    font-weight: bold;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+.icones_redes{
+    margin-left: 15px;
+
+}
+.fa-brands.fa-instagram{
+    font-size: 15px;
+    cursor: pointer;
+}
+.fa-brands.fa-facebook{
+    font-size: 15px;
+    cursor: pointer;
+    margin-left: 5px;
+}
+.fa-brands.fa-twitter{
+    font-size: 15px;
+    cursor: pointer;
+    margin-left: 5px;
+}
+
+#sidebar {
+    width: 70px;
+    min-width: 70px;
+    z-index: 1000;
+    transition: all .25s ease-in-out;
+    background-color: #182638;
+    display: flex;
+    flex-direction: column;
+}
+
+#sidebar.expand {
+    width: 260px;
+    min-width: 260px;
+}
+
+.toggle-btn {
+    background-color: transparent;
+    cursor: pointer;
+    border: 0;
+    max-width: 70px;
+    padding: 1rem 0rem;
+}
+
+.sidebar-logo {
+    margin: auto 0;
+}
+
+.sidebar-logo a {
+    color: #FFF;
+    font-size: 1.15rem;
+    font-weight: 600;
+}
+
+#sidebar:not(.expand) .sidebar-logo,
+#sidebar:not(.expand) a.sidebar-link span {
+    display: none;
+}
+
+.sidebar-nav {
+    padding: 2rem 0;
+    flex: 1 1 auto;
+}
+
+a.sidebar-link {
+    padding: .625rem 1.625rem;
+    color: #FFF;
+    display: block;
+    font-size: 0.9rem;
+    white-space: nowrap;
+    border-left: 3px solid transparent;
+    text-decoration: none;
+}
+
+.sidebar-link i {
+    position: relative;
+    top: 5px;
+    font-size: 1.1rem;
+    margin-right: .75rem;
+}
+
+a.sidebar-link:hover {
+    background-color: rgba(255, 255, 255, .075);
+    border-left: 3px solid #fff;
+}
+
+.sidebar-item {
+    position: relative;
+}
+
+#sidebar.expand .sidebar-link[data-bs-toggle="collapse"]::after {
+    border: solid;
+    border-width: 0 .075rem .075rem 0;
+    content: "";
+    display: inline-block;
+    padding: 2px;
+    position: absolute;
+    right: 1.5rem;
+    top: 1.4rem;
+    transform: rotate(-135deg);
+    transition: all .2s ease-out;
+}
+
+#sidebar.expand .sidebar-link[data-bs-toggle="collapse"].collapsed::after {
+    transform: rotate(45deg);
+    transition: all .2s ease-out;
+}
+
+.main {
+    min-height: 100vh;
+    width: 100%;
+    margin-left: 70px;
+    overflow: hidden;
+    transition: all 0.35s ease-in-out;
+    background-color: #2E2D27;
+}
+.main i {
+    position: relative;
+    top: 2px;
+    font-size: 1.1rem;
+}
+
+.sensor-value{
+    font-size: 2rem !important;
+    font-weight: bold;
+}
+
+#back {
+    font-size: 2rem;
+}
+
+.home{
+    background-color: #6C757D;
+    min-height: 300px;
+}
+
+.tabela{
+    background-color: #6C757D;
+}
+
+.tabela-link{
+    width: 20px;
+    height: 20px;
+}
+
+.botao-link{
+    font-weight: bold;
+}
+
+.botao-link:hover{
+    color: #000;
+}
+
+#button1{
+    background-color: #3F4647; color: #FFF;
+}
+
+.p-4.rounded-4.bg-light.shadow{
+    background-color: #6C757D;
+}
+
+@media (max-width:575.98px){
+    .hero-full{ justify-content:flex-start; }
+    .login-card{ margin-top:4rem; }
+}
+.bg-config {
+  background-color: #6C757D !important;
+  color: #fff;
+}
+
+

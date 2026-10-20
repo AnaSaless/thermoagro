@@ -1,0 +1,52 @@
+{% extends "blades/base2.html" %}
+{% block title %}{{ 'Novo' if action=='create' else 'Editar' }} Atuador{% endblock %}
+
+{% block content %}
+<div class="main container-fluid p-5">
+  <h1>{{ 'Novo' if action=='create' else 'Editar' }} Atuador</h1>
+  <hr class="mt-1 text-white">
+  <form method="post"
+        action="{% if action=='create' %}
+                  {{ url_for('actuator.admin_create_actuator') }}
+                {% else %}
+                  {{ url_for('actuator.admin_update_actuator', key=key) }}
+                {% endif %}">
+
+    <div class="mb-3">
+      <label class="form-label">Nome</label>
+      <input name="name" class="form-control"
+             value="{{ data.name if action=='edit' else '' }}" required>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Tópico MQTT</label>
+      <input name="topic" class="form-control"
+             value="{{ data.topic if action=='edit' else '' }}" required>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Ícone Bootstrap</label>
+      <input name="icon" class="form-control"
+             value="{{ data.icon if action=='edit' else '' }}" required>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Estado Json pra Abrir</label>
+      <input name="open_payload" class="form-control"
+             value="{{ data.open_payload if action=='edit' else '{}' }}" required>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Estado Json pra Fechar</label>
+      <input name="close_payload" class="form-control"
+             value="{{ data.close_payload if action=='edit' else '{}' }}" required>
+    </div>
+
+    {% if error_msg %}<p class="text-danger">{{ error_msg }}</p>{% endif %}
+
+    <button class="btn btn-success">Salvar</button>
+    <a href="{{ url_for('actuator.admin_list_actuators') }}"
+       class="btn btn-secondary">Cancelar</a>
+  </form>
+</div>
+{% endblock %}
